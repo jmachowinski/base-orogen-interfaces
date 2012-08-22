@@ -1,0 +1,10 @@
+<package>
+  <description brief="Orogen definitions for abstract base tasks, which share a common functionality.">
+  In certain cases task inheritance is useful in order to keep a common
+  interface for certain tasks. A main use for this is to define task interfaces
+  to device drivers, which can then be specialised for certain device types.
+  </description>
+  <author>Jakob Schwendner/jakob.schwendner@dfki.de</author>
+  <license>LGPL v2.0</license>
+  <depend package="base/orogen/types" />
+</package>
