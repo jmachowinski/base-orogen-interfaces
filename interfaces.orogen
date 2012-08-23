@@ -1,52 +1,51 @@
 name "interfaces"
-# Optionally declare the version number
-# version "0.1"
+version "0.1"
 
-# If new data types need to be defined, they have to be put in a separate C++
-# header, and this header will be loaded here
-# import_types_from "interfacesType.hpp"
+import_types_from "base"
+import_types_from "interfacesTypes.hpp"
 
-# If the component/deployments use data types that are defined in other oroGen
-# projects, these projects should be imported there as well.
-# import_types_from "base"
+task_context "Servo" do
+    needs_configuration
+    abstract
 
-# Declare a new task context (i.e., a component)
-#
-# The corresponding C++ class can be edited in tasks/Task.hpp and
-# tasks/Task.cpp, and will be put in the interfaces namespace.
-task_context "Task" do
-   # A configuration property (here, a std::string). Its value can be retrieved
-   # in the C++ code with # _config_value.get() and _config_value.set(new_value).
-   property "config_value", "/std/string"
+    property("zero_offset", "double", 0.0).
+        doc "offset between the servo zero and the mounting zero"
 
-   # An input port, i.e. an object from which the component gets data from
-   # other components' outputs
-   #
-   # Data can be retrieved using _input.read(value), which returns true if data
-   # was available, and false otherwise. _input.connected() returns if this
-   # input is connected to an output or not.
-   input_port "input", "/std/string"
+    property("mode", "/servo/MODE", :POSITION).
+       doc("mode of the module, 0 is hold position, 1 is contious sweep")
+ 
+    property("lower_sweep_angle", "double", 0).
+        doc("lower bound of the sweep")
+ 
+    property("upper_sweep_angle", "double", 0).
+        doc("upper bound of the sweep")
+ 
+    property("moving_speed", "double", 0).
+        doc("turning speed in rad/sec")
+ 
+    property("upper_frame", "std/string", "upper_servo").
+	doc "The name of the frame, where the upper part (rotating) of the servo is mounted"
 
-   # An output port, i.e. an object to which the component pushes data so that
-   # it is transmitted to other components' inputs
-   #
-   # Data can be written using _output.write(value). _output.connected() returns
-   # if this output is connected to an input or not.
-   output_port "output", "int"
+    property("lower_frame", "std/string", "lower_servo").
+	doc "The name of the frame, where the lower part (fixed) of the servo is mounted"
 
-   # If you want that component's updateHook() to be executed when the "input"
-   # port gets data, uncomment this
-   # port_driven "input"
+    property("rotation_axis", "base/Vector3d").
+	doc "rotational axis for the upper2lower transform."
+
+    output_port('upper2lower', '/base/samples/RigidBodyState').
+	doc "transformation between the lower and upper frame. The rotational axis of the servo is specified in rotation_axis."
+
+    output_port('angle', 'double').
+	doc "current tilt angle of the servo, in radians"
+
+    input_port('cmd_angle', 'double').
+	doc "wanted tilt angle of the servo, in radians"
+
+    operation("set_angle").
+        returns('bool').
+        argument("angle", "double", "set the angle of the servo, in radians")
+
+    default_activity :periodic, 0.01
 end
 
-
-# Declares a deployment, i.e. an actual executable that contains various tasks.
-deployment "interfaces_test" do
-    # This is a test deployment that should not be installed
-    do_not_install
-
-    # Declares it as periodic, with a period of 100ms
-    task("interfaces", "Task").
-        periodic(0.1)
-end
 
