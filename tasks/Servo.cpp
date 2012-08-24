@@ -50,7 +50,7 @@ void Servo::updateHook()
     _angle.write( present_angle );
     
     //also report as transformation
-    upper2lower.time = base::Time::now();
+    upper2lower.time = getTime();
     upper2lower.orientation = Eigen::AngleAxisd( -present_angle, _rotation_axis.value() );
     _upper2lower.write(upper2lower);
 

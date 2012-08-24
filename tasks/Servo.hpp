@@ -36,6 +36,8 @@ namespace interfaces {
 	 */
 	virtual double get_angle() = 0;
 
+	virtual base::Time getTime() = 0;
+
 	/** target angle */
 	double target_angle;
 	/** last measured angle */
