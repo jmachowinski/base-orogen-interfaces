@@ -1,7 +1,6 @@
 /* Generated from orogen/lib/orogen/templates/tasks/Task.cpp */
 
 #include "ActuatorSensorReader.hpp"
-#include <../../../rock1.9/tools/typelib/test/data/test_idl.h>
 #include "OrocosStateAggregator.hpp"
 
 using namespace interfaces;
