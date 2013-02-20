@@ -2,7 +2,10 @@
 
 include(interfacesTaskLib)
 ADD_LIBRARY(${INTERFACES_TASKLIB_NAME} SHARED 
-    ${INTERFACES_TASKLIB_SOURCES})
+    StateAggregator.cpp
+    OrocosStateAggregator.cpp
+    ${INTERFACES_TASKLIB_SOURCES}
+    )
 
 add_dependencies(${INTERFACES_TASKLIB_NAME}
     regen-typekit)
@@ -19,5 +22,7 @@ INSTALL(TARGETS ${INTERFACES_TASKLIB_NAME}
     LIBRARY DESTINATION lib/orocos)
 
 INSTALL(FILES ${INTERFACES_TASKLIB_HEADERS}
+    StateAggregator.hpp
+    OrocosStateAggregator.hpp
     DESTINATION include/orocos/interfaces)
 
