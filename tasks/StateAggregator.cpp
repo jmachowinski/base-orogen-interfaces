@@ -114,6 +114,17 @@ CommandDispatcher::CommandDispatcher(const std::vector< int32_t >& actuatorMap, 
     }	
 }
 
+const std::vector<int32_t> CommandDispatcher::getActuatorIds() const
+{
+    std::vector<int32_t> ret;
+    for(std::vector<InputMapping>::const_iterator it = inputMap.begin(); it != inputMap.end(); it++)
+    {
+	ret.push_back(it->actuatorId);
+    }
+    return ret;
+
+}
+
 void CommandDispatcher::processCommand(base::actuators::Command cmd)
 {
     for(std::vector<InputMapping>::const_iterator it = inputMap.begin(); it != inputMap.end(); it++)

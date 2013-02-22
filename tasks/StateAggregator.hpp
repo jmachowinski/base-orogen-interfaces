@@ -69,6 +69,8 @@ class CommandDispatcher
     boost::function<void (int32_t actuatorId, base::actuators::DRIVE_MODE mode, double value)> setCommandCallback;
     
 public:
+    const std::vector<int32_t> getActuatorIds() const;
+    
     CommandDispatcher(std::vector< boost::int32_t > const & actuatorMap, boost::function<void (int32_t actuatorId, base::actuators::DRIVE_MODE mode, double value)> setCommandCallback);
     virtual ~CommandDispatcher() {};
     
