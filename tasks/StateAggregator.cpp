@@ -9,14 +9,12 @@ StateAggregator::StateAggregator(const std::vector<int32_t>& statusMap, base::Ti
     for (unsigned int i = 0; i < statusMap.size(); ++i)
     {
         int board_idx = abs(statusMap[i]) - 1;
+	//zero has the special meaning
+	//of 'do not use this id'
+	if(statusMap[i] == 0)
 	{
-	    //zero has the special meaning
-	    //of 'do not use this id'
-	    if(statusMap[i] == 0)
-	    {
-		status.states[i].setInvalid();
-		continue;
-	    }
+	    status.states[i].setInvalid();
+	    continue;
 	}
 	
 	actuatorCnt++;
@@ -25,7 +23,13 @@ StateAggregator::StateAggregator(const std::vector<int32_t>& statusMap, base::Ti
 	info.outputPosition = i;
 	info.isReverse = statusMap[i] < 0;
 	
-	stateMap.insert(std::make_pair(i, info));
+	stateMap.insert(std::make_pair(board_idx, info));
+	
+	if(stateIdToInfo.size() <= board_idx)
+	{
+	    stateIdToInfo.resize(board_idx + 1, NULL);
+	}
+	stateIdToInfo[board_idx] = &(stateMap[board_idx]);
     }
 
     reset();
@@ -36,7 +40,7 @@ const std::vector<int32_t> StateAggregator::getActuatorIds() const
     std::vector<int32_t> ret;
     for(std::map<int, StateInfo>::const_iterator it = stateMap.begin(); it != stateMap.end(); it++)
     {
-	ret.push_back(it->first);
+	ret.push_back(it->second.stateId);
     }
     return ret;
 }
