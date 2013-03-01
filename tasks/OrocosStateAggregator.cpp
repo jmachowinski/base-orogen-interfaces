@@ -45,6 +45,8 @@ OrocosCommandDispatcher::OrocosCommandDispatcher(RTT::TaskContext &task, boost::
     port = new RTT::InputPort< base::actuators::Command >(inputPortName);
     task.addPort(*port);
     
+    task.provides()->addEventPort(*port);
+    
     inputSample.resize(actuatorMap.size());
 }
 

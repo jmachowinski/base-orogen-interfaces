@@ -48,8 +48,8 @@ bool Actuator::dispatch(::std::string const & name, ::std::vector< boost::int32_
     const std::vector<int32_t> ids = agg->getActuatorIds();
     for(std::vector<int32_t>::const_iterator it = ids.begin(); it != ids.end();it++)
     {
-	if(actuatorToDispatchMap.size() < (uint32_t) *it)
-	    actuatorToDispatchMap.resize(*it);
+	if(actuatorToDispatchMap.size() <= (uint32_t) *it)
+	    actuatorToDispatchMap.resize(*it + 1);
 	
 	actuatorToDispatchMap[*it] = dispId;
     }
@@ -68,6 +68,13 @@ void Actuator::processDispatched()
 	(*it)->process();
     }
 }
+
+void Actuator::setNewActuatorStatus(int actuatorId, const base::Time stateTime, const base::actuators::MotorState& state)
+{
+    const int dispId = actuatorToDispatchMap[actuatorId];
+    stateDispatches[dispId]->setNewStatus(actuatorId, stateTime, state);
+}
+
 
 void Actuator::cleanupHook()
 {
