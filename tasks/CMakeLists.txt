@@ -1,11 +1,20 @@
 # Generated from orogen/lib/orogen/templates/tasks/CMakeLists.txt
 
 include(interfacesTaskLib)
-ADD_LIBRARY(${INTERFACES_TASKLIB_NAME} SHARED 
+
+if(BUILD_STATIC)
+    ADD_LIBRARY(${INTERFACES_TASKLIB_NAME}
     StateAggregator.cpp
     OrocosStateAggregator.cpp
     ${INTERFACES_TASKLIB_SOURCES}
-    )
+)
+else()
+    ADD_LIBRARY(${INTERFACES_TASKLIB_NAME} SHARED 
+    StateAggregator.cpp
+    OrocosStateAggregator.cpp
+    ${INTERFACES_TASKLIB_SOURCES}
+)
+endif()
 
 add_dependencies(${INTERFACES_TASKLIB_NAME}
     regen-typekit)
@@ -19,7 +28,8 @@ SET_TARGET_PROPERTIES(${INTERFACES_TASKLIB_NAME}
 
 INSTALL(TARGETS ${INTERFACES_TASKLIB_NAME}
     RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib/orocos)
+    LIBRARY DESTINATION lib/orocos
+    ARCHIVE DESTINATION lib/orocos)
 
 INSTALL(FILES ${INTERFACES_TASKLIB_HEADERS}
     StateAggregator.hpp
