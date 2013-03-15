@@ -6,6 +6,12 @@
 #include "interfaces/ActuatorCommandWriterBase.hpp"
 #include "OrocosStateAggregator.hpp"
 
+#ifndef RTT_COMPONENT
+#define VIRTUAL = 0
+#else
+#define VIRTUAL { throw("COULD NOT USE AN ABSTRACT CLASS"); }
+#endif
+
 namespace interfaces {
 
     /*! \class ActuatorCommandWriter 
@@ -33,7 +39,7 @@ namespace interfaces {
          */
         virtual bool dispatch(::std::string const & name, ::std::vector< boost::int32_t > const & actuatorMap);
 
-	virtual void setCommand(int32_t actuatorId, base::actuators::DRIVE_MODE mode, double value) = 0;
+	virtual void setCommand(int32_t actuatorId, base::actuators::DRIVE_MODE mode, double value) VIRTUAL;
 	
 	/**
 	 * Pull all data from the dispatch ports

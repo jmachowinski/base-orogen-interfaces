@@ -5,6 +5,12 @@
 
 #include "interfaces/ServoBase.hpp"
 
+#ifndef RTT_COMPONENT
+#define VIRTUAL = 0
+#else
+#define VIRTUAL { throw("COULD NOT USE AN ABSTRACT CLASS"); }
+#endif
+
 namespace interfaces {
 
     /*! \class Servo 
@@ -28,15 +34,15 @@ namespace interfaces {
 
         /** Handler for the set_angle operation
          */
-        virtual bool set_angle(double angle) = 0;
+        virtual bool set_angle(double angle) VIRTUAL;
 
 	/** Get angle operation returns the current angle of the servo. Overide
 	 * this in derived classes, with actual angle values. Get angle has to take
 	 * the value of zero offset into account.
 	 */
-	virtual double get_angle() = 0;
+	virtual double get_angle() VIRTUAL;
 
-	virtual base::Time getTime() = 0;
+	virtual base::Time getTime() VIRTUAL;
 
 	/** target angle */
 	double target_angle;

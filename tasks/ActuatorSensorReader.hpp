@@ -6,6 +6,12 @@
 #include "interfaces/ActuatorSensorReaderBase.hpp"
 #include "StateAggregator.hpp"
 
+#ifndef RTT_COMPONENT
+#define VIRTUAL = 0
+#else
+#define VIRTUAL { throw("COULD NOT USE AN ABSTRACT CLASS"); }
+#endif
+
 namespace interfaces {
 
     class OrocosStateAggregator;
@@ -34,7 +40,7 @@ namespace interfaces {
 	///The nominal time between two status updates of an actuator
 	base::Time statusInterval;
 	
-	virtual void statusDispatchAdded(int dispatchId, std::vector<int> actuatorIds) = 0;
+	virtual void statusDispatchAdded(int dispatchId, std::vector<int> actuatorIds) VIRTUAL;
 	void setNewActuatorStatus(int actuatorId, const base::Time stateTime, const base::actuators::MotorState &state);
 	
         /* Handler for the dispatch operation

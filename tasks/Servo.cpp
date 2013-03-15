@@ -110,3 +110,5 @@ void Servo::updateHook()
 //     ServoBase::cleanupHook();
 // }
 
+#ifndef VIRTUAL
+#endif
