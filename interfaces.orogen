@@ -112,8 +112,6 @@ task_context 'IMU' do
 
     output_port('orientation_samples', '/base/samples/RigidBodyState').
         doc 'provides timestamped IMUReading samples containing the orientation estimate as reported by the IMU.'
-    output_port('pose_samples', '/base/samples/RigidBodyState').
-        doc 'provides timestamped IMUReading samples containing the complete pose'
     output_port('calibrated_sensors', '/base/samples/IMUSensors').
         doc 'provides timestamped IMUReading samples containing the calibrated sensor readings.'
 
