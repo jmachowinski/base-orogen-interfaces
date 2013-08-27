@@ -41,6 +41,7 @@ end
 
 task_context 'LaserRangeFinder' do
     needs_configuration
+    abstract
 
     property('remission_values',  'bool', 0).
         doc 'include remission values in output if set to true and available in the device'
@@ -60,6 +61,7 @@ end
 
 task_context 'IMU' do
     needs_configuration
+    abstract
 
     property("imu_frame", "std/string", "imu").
 	doc "The name of the imu frame."
