@@ -39,7 +39,7 @@ namespace interfaces {
          */
         virtual bool dispatch(::std::string const & name, ::std::vector< boost::int32_t > const & actuatorMap);
 
-	virtual void setCommand(int32_t actuatorId, base::actuators::DRIVE_MODE mode, double value) VIRTUAL;
+	virtual void setCommand(int32_t actuatorId, base::JointState::MODE mode, double value) VIRTUAL;
 	
 	/**
 	 * Pull all data from the dispatch ports

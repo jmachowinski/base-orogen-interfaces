@@ -38,21 +38,21 @@ task_context "Servo" do
         argument("angle", "double", "set the angle of the servo, in radians")
 end
 
-task_context "Actuator" do
-    needs_configuration
-    abstract
-
-    operation('dispatch').
-        doc('creates an output port of actuator status and an input port for setting actuator commands').
-        returns("bool").
-        argument('name', 'std::string', "the name of the board set. Ports called status_name and cmd_name will be created").
-        argument('actuatorMap', '/std/vector</int>', "A map that maps the actuator id to the position in the Command structure. Note that a negative value can be given to autoamtically invert the commands")
-
-    dynamic_input_port(/cmd_\w+/, "base/actuators/Command").
-        doc "commands for a set of actuators set up by #dispatch"
-    dynamic_output_port(/status_\w+/, "base/actuators/Status").
-        doc "status of a set of actuators set up by #dispatch"
-end
+#task_context "Actuator" do
+#    needs_configuration
+#    abstract
+#
+#    operation('dispatch').
+#        doc('creates an output port of actuator status and an input port for setting actuator commands').
+#        returns("bool").
+#        argument('name', 'std::string', "the name of the board set. Ports called status_name and cmd_name will be created").
+#        argument('actuatorMap', '/std/vector</int>', "A map that maps the actuator id to the position in the Command structure. Note that a negative value can be given to autoamtically invert the commands")
+#
+#    dynamic_input_port(/cmd_\w+/, "base/actuators/Command").
+#        doc "commands for a set of actuators set up by #dispatch"
+#    dynamic_output_port(/status_\w+/, "base/actuators/Status").
+#        doc "status of a set of actuators set up by #dispatch"
+#end
 
 
 task_context "ActuatorCommandWriter" do
@@ -65,7 +65,7 @@ task_context "ActuatorCommandWriter" do
         argument('name', 'std::string', "the name of the board set. Ports called status_name and cmd_name will be created").
         argument('actuatorMap', '/std/vector</int>', "A map that maps the actuator id (1-based) to the position (0-based) in the Command structure. Note that a negative value can be given to autoamtically invert the commands, and zero to insert an empty entry.")
 
-    dynamic_input_port(/cmd_\w+/, "base/actuators/Command").
+    dynamic_input_port(/cmd_\w+/, "base/commands/Joints").
         doc "commands for a set of actuators set up by #dispatch"
 end
 
@@ -79,7 +79,7 @@ task_context "ActuatorSensorReader" do
         argument('name', 'std::string', "the name of the board set. Ports called status_name and cmd_name will be created").
         argument('actuatorMap', '/std/vector</int>', "A map that maps the actuator id (1-based) to the position in the Status structure. Note that a negative value can be given to autoamtically invert the Sensor output, and zero to insert an empty entry.")
 
-    dynamic_output_port(/status_\w+/, "base/actuators/Status").
+    dynamic_output_port(/status_\w+/, "base/samples/Joints").
         doc "status of a set of actuators set up by #dispatch"
 end
 

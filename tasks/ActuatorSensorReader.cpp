@@ -51,7 +51,7 @@ bool ActuatorSensorReader::dispatch(::std::string const & name, ::std::vector< b
 }
 
 
-void ActuatorSensorReader::setNewActuatorStatus(int actuatorId, const base::Time stateTime, const base::actuators::MotorState& state)
+void ActuatorSensorReader::setNewActuatorStatus(int actuatorId, const base::Time stateTime, const base::JointState& state)
 {
     const int dispId = actuatorToDispatchMap[actuatorId];
     stateDispatches[dispId]->setNewStatus(actuatorId, stateTime, state);

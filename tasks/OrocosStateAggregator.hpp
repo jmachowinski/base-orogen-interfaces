@@ -8,25 +8,25 @@
 class OrocsStateAggregator: public StateAggregator
 {
 private:
-    RTT::OutputPort< base::actuators::Status > *outputPort;
+    RTT::OutputPort< base::samples::Joints > *outputPort;
     RTT::TaskContext &task;
 public:
     OrocsStateAggregator(RTT::TaskContext &task, ::std::string const & name, const std::vector< int32_t >& statusMap, base::Time statusInterval);
     
     ~OrocsStateAggregator();
     
-    virtual void writeStatus(const base::actuators::Status& status);
+    virtual void writeStatus(const base::samples::Joints& status);
 };
 
 
 class OrocosCommandDispatcher: public CommandDispatcher
 {
-    RTT::InputPort< base::actuators::Command > *port;
+    RTT::InputPort< base::commands::Joints > *port;
     RTT::TaskContext &task;
 
-    base::actuators::Command inputSample;
+    base::commands::Joints inputSample;
 public:
-    OrocosCommandDispatcher(RTT::TaskContext &task, boost::function<void (int32_t actuatorId, base::actuators::DRIVE_MODE mode, double value)> setCommandCallback, ::std::string const & name, ::std::vector< boost::int32_t > const & actuatorMap);
+    OrocosCommandDispatcher(RTT::TaskContext &task, boost::function<void (int32_t actuatorId, base::JointState::MODE mode, double value)> setCommandCallback, ::std::string const & name, ::std::vector< boost::int32_t > const & actuatorMap);
     
     ~OrocosCommandDispatcher();
     

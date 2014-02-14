@@ -3,8 +3,7 @@
 #include <vector>
 #include <map>
 #include <base/time.h>
-#include <base/actuators/status.h>
-#include <base/actuators/commands.h>
+#include <base/commands/Joints.hpp>
 #include <boost/function.hpp>
 
 class StateAggregator
@@ -25,7 +24,7 @@ class StateAggregator
     ///conter for arrived state updates
     int updateCnt;
     
-    base::actuators::Status status;
+    base::commands::Joints status;
     std::vector<StateInfo *> stateIdToInfo;
     
     std::map<int, StateInfo> stateMap;
@@ -36,7 +35,7 @@ class StateAggregator
     void reset();
 
 protected:
-    const base::actuators::Status &getStatus() const 
+    const base::commands::Joints &getStatus() const 
     {
 	return status;
     };
@@ -48,9 +47,9 @@ public:
     StateAggregator(const std::vector<int32_t>& statusMap, base::Time statusInterval);
     virtual ~StateAggregator() {};
     
-    void setNewStatus(int stateId, const base::Time stateTime, const base::actuators::MotorState& state);
+    void setNewStatus(int stateId, const base::Time stateTime, const base::JointState& state);
 
-    virtual void writeStatus(const base::actuators::Status &status) = 0;	
+    virtual void writeStatus(const base::commands::Joints &status) = 0;	
 };
 
 class CommandDispatcher
@@ -66,15 +65,15 @@ class CommandDispatcher
     ///map from positions in the base::actuator::command to the driver ids
     std::vector<InputMapping> inputMap;
     
-    boost::function<void (int32_t actuatorId, base::actuators::DRIVE_MODE mode, double value)> setCommandCallback;
+    boost::function<void (int32_t actuatorId, base::JointState::MODE mode, double value)> setCommandCallback;
     
 public:
     const std::vector<int32_t> getActuatorIds() const;
     
-    CommandDispatcher(std::vector< boost::int32_t > const & actuatorMap, boost::function<void (int32_t actuatorId, base::actuators::DRIVE_MODE mode, double value)> setCommandCallback);
+    CommandDispatcher(std::vector< boost::int32_t > const & actuatorMap, boost::function<void (int32_t actuatorId, base::JointState::MODE mode, double value)> setCommandCallback);
     virtual ~CommandDispatcher() {};
     
-    void processCommand(base::actuators::Command cmd);    
+    void processCommand(base::commands::Joints cmd);    
 };
 
 

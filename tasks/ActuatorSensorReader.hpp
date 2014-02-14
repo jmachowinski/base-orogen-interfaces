@@ -41,7 +41,7 @@ namespace interfaces {
 	base::Time statusInterval;
 	
 	virtual void statusDispatchAdded(int dispatchId, std::vector<int> actuatorIds) VIRTUAL;
-	void setNewActuatorStatus(int actuatorId, const base::Time stateTime, const base::actuators::MotorState &state);
+	void setNewActuatorStatus(int actuatorId, const base::Time stateTime, const base::JointState &state);
 	
         /* Handler for the dispatch operation
          */

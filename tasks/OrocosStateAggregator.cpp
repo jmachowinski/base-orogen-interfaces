@@ -11,7 +11,7 @@ OrocsStateAggregator::OrocsStateAggregator(RTT::TaskContext& task, const std::st
 	throw std::runtime_error(std::string("cannot create a dispatch called '") + name + "' as a port named  '" + outputPortName + "' is already in use in the task interface");
     }
 
-    outputPort = new RTT::OutputPort< base::actuators::Status >(outputPortName);
+    outputPort = new RTT::OutputPort< base::commands::Joints >(outputPortName);
     task.addPort(*outputPort);
 
     // Initialize the connections with the preallocated data structure, so that
@@ -25,13 +25,13 @@ OrocsStateAggregator::~OrocsStateAggregator()
     delete outputPort;
 }
 
-void OrocsStateAggregator::writeStatus(const base::actuators::Status& status)
+void OrocsStateAggregator::writeStatus(const base::samples::Joints& status)
 {
     outputPort->write(status);
 }
 
 
-OrocosCommandDispatcher::OrocosCommandDispatcher(RTT::TaskContext &task, boost::function<void (int32_t actuatorId, base::actuators::DRIVE_MODE mode, double value)> setCommandCallback, ::std::string const & name, ::std::vector< boost::int32_t > const & actuatorMap): CommandDispatcher(actuatorMap, setCommandCallback), task(task)
+OrocosCommandDispatcher::OrocosCommandDispatcher(RTT::TaskContext &task, boost::function<void (int32_t actuatorId, base::JointState::MODE mode, double value)> setCommandCallback, ::std::string const & name, ::std::vector< boost::int32_t > const & actuatorMap): CommandDispatcher(actuatorMap, setCommandCallback), task(task)
 {
     std::string inputPortName("cmd_" + name);
 
@@ -42,7 +42,7 @@ OrocosCommandDispatcher::OrocosCommandDispatcher(RTT::TaskContext &task, boost::
 	throw std::runtime_error(std::string("cannot create a dispatch called '") + inputPortName + "' as a port named '" + inputPortName + "' is already in use in the task interface");
     }
 
-    port = new RTT::InputPort< base::actuators::Command >(inputPortName);
+    port = new RTT::InputPort< base::commands::Joints >(inputPortName);
     task.addPort(*port);
     
     task.provides()->addEventPort(*port);

@@ -13,7 +13,7 @@ StateAggregator::StateAggregator(const std::vector<int32_t>& statusMap, base::Ti
 	//of 'do not use this id'
 	if(statusMap[i] == 0)
 	{
-	    status.states[i].setInvalid();
+	    //status.states[i].setInvalid(); //Not needed
 	    continue;
 	}
 	
@@ -59,7 +59,7 @@ void StateAggregator::reset()
 }
 
 
-void StateAggregator::setNewStatus(int stateId, const base::Time stateTime, const base::actuators::MotorState& state)
+void StateAggregator::setNewStatus(int stateId, const base::Time stateTime, const base::JointState & state)
 {
     
     StateInfo &info(*(stateIdToInfo[stateId]));
@@ -80,11 +80,14 @@ void StateAggregator::setNewStatus(int stateId, const base::Time stateTime, cons
 
     info.updated = true;
     info.updateTime = stateTime;
-    status.states[stateId] = state;
+    status[stateId] = state;
+
+    /* //TODO huh?
     if(info.isReverse)
     {
 	status.states[stateId].invert();
     }
+    */
     
     //allways use the latest time
     status.time = stateTime;
@@ -98,7 +101,7 @@ void StateAggregator::setNewStatus(int stateId, const base::Time stateTime, cons
     }
 }
 
-CommandDispatcher::CommandDispatcher(const std::vector< int32_t >& actuatorMap, boost::function<void (int32_t actuatorId, base::actuators::DRIVE_MODE mode, double value)> setCommandCallback): setCommandCallback(setCommandCallback)
+CommandDispatcher::CommandDispatcher(const std::vector< int32_t >& actuatorMap, boost::function<void (int32_t actuatorId, base::JointState::MODE mode, double value)> setCommandCallback): setCommandCallback(setCommandCallback)
 {
     for(uint32_t i = 0; i < actuatorMap.size();i++)
     {
@@ -129,16 +132,19 @@ const std::vector<int32_t> CommandDispatcher::getActuatorIds() const
 
 }
 
-void CommandDispatcher::processCommand(base::actuators::Command cmd)
+void CommandDispatcher::processCommand(base::samples::Joints cmd)
 {
     for(std::vector<InputMapping>::const_iterator it = inputMap.begin(); it != inputMap.end(); it++)
     {
 	const int i = it->inputId;
+        /* //TODO Reverse direction 
 	if(it->isReverse)
 	{
 	    cmd.invert(i);
 	}
-	setCommandCallback(it->actuatorId, cmd.mode[i], cmd.target[i]);
+        */
+        
+	setCommandCallback(it->actuatorId, cmd[i].getMode(), cmd[i].getField(cmd[i].getMode()));
     }
 };
 
