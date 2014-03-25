@@ -7,4 +7,5 @@
   <author>Jakob Schwendner/jakob.schwendner@dfki.de</author>
   <license>LGPL v2.0</license>
   <depend package="base/orogen/types" />
+  <tags>stable</tags>
 </package>
