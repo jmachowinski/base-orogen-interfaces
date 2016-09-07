@@ -1,7 +1,6 @@
 /* Generated from orogen/lib/orogen/templates/tasks/Task.cpp */
 
 #include "ActuatorCommandWriter.hpp"
-#include <base/actuators/commands.h>
 #include "OrocosStateAggregator.hpp"
 
 using namespace interfaces;
